@@ -10,6 +10,14 @@ export const getAllWebsites = async (userId) => {
   return websites;
 };
 
+export const getSingleWebsite = async (websiteId) => {
+  await dbConnect();
+
+  const website = await Website.findById(websiteId);
+
+  return website;
+};
+
 export const findWebsiteName = async (websiteId) => {
   console.log("ENTER FIND WEBSITE NAME SERVICE");
   await dbConnect();

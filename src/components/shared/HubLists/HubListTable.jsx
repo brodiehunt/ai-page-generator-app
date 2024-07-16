@@ -21,11 +21,11 @@ async function getHubs(websiteId) {
   return response.json();
 }
 
-const HubListTable = async ({ websiteId, websiteName, userId }) => {
+const HubListTable = async ({ websiteId, websiteName, userId, website }) => {
   const { hubs, error } = await getHubs(websiteId);
 
   return (
-    <section className="mx-auto">
+    <section className="mx-auto max-w-[100%] overflow-x-hidden">
       <div className="flex flex-col">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -44,6 +44,7 @@ const HubListTable = async ({ websiteId, websiteName, userId }) => {
                             hub={hub}
                             userId={userId}
                             websiteId={websiteId}
+                            website={website}
                           />
                         );
                       })}
@@ -110,19 +111,11 @@ const HubTableHead = () => {
             </button>
           </div>
         </th>
-
         <th
           scope="col"
           className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
         >
-          Last Edited
-        </th>
-
-        <th
-          scope="col"
-          className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
-        >
-          SEO Matrix
+          In SEO Matrix?
         </th>
 
         <th
@@ -132,12 +125,12 @@ const HubTableHead = () => {
           Blogs
         </th>
 
-        <th
+        {/* <th
           scope="col"
           className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"
         >
           Live On Site
-        </th>
+        </th> */}
 
         <th scope="col" className="relative py-3.5 px-4">
           <span className="sr-only">Actions</span>
@@ -147,8 +140,10 @@ const HubTableHead = () => {
   );
 };
 
-const HubRow = ({ hub, userId }) => {
+const HubRow = ({ hub, userId, website }) => {
   console.log("HubData", hub);
+  const inSEOMatrix = website?.seoMatrix?.hubs.includes(hub.topic);
+
   return (
     <tr className="">
       <td className="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
@@ -156,20 +151,25 @@ const HubRow = ({ hub, userId }) => {
           <span>{hub.name}</span>
         </div>
       </td>
-      <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+      {/* <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
         Jan 6, 2022
-      </td>
+      </td> */}
       <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-        {/* {hub.seoMatrix?.hasContent ? (
-          <GreenBubble>True</GreenBubble>
+        {inSEOMatrix ? (
+          <GreenBubble>Yes</GreenBubble>
         ) : (
-          <RedBubble>False</RedBubble>
-        )} */}
+          <div className="flex gap-2 items-center">
+            <RedBubble>No</RedBubble>
+            <button className="text-sm font-normal underline text-custom-primary">
+              Add?
+            </button>
+          </div>
+        )}
       </td>
       <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
         <Blogs blogs={hub.blogs} />
       </td>
-      <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+      {/* <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
         <Link
           href="/"
           className="text-custom-primary/80 transition-all duration-200ms hover:text-custom-primary underline"
@@ -177,7 +177,7 @@ const HubRow = ({ hub, userId }) => {
         >
           Visit Site
         </Link>
-      </td>
+      </td> */}
       <td className="px-4 py-4 text-sm whitespace-nowrap ml-auto">
         <div className="flex items-center gap-x-6 justify-end">
           <Link
