@@ -62,7 +62,9 @@ export default async function HubsPage({ params, searchParams }) {
                   websiteName={website.name}
                   websiteId={websiteId}
                   userId={userId}
-                />
+                >
+                  Create New Hub
+                </NewHubModalButton>
               </DashboardSectionHeader>
               <Suspense fallback={<div>Loading websites...</div>}>
                 <HubListTable

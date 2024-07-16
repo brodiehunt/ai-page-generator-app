@@ -3,8 +3,8 @@ import DashboardPageHeader from "@/src/components/shared/dashboard/DashboardPage
 import DashboardPagesContainer from "@/src/components/shared/dashboard/DashboardPagesContainer";
 import DashboardSectionHeader from "@/src/components/shared/dashboard/DashboardSectionHeader";
 import HubListTable from "@/src/components/shared/HubLists/HubListTable";
+import NewHubModalButton from "@/src/components/shared/HubLists/NewHubModalButton";
 import { Suspense } from "react";
-import { getWebsiteName } from "@/src/actions/website";
 
 const fetchWebsiteData = async (websiteId) => {
   try {
@@ -37,8 +37,6 @@ export default async function SingleWebsitePage({ params }) {
   const { websiteId } = params;
   const session = await auth();
   const userId = session?.user.id;
-  // const { name, error } = await getWebsiteName(websiteId);
-  const name = null;
   const { error, website } = await fetchWebsiteData(websiteId);
 
   return (
@@ -59,8 +57,18 @@ export default async function SingleWebsitePage({ params }) {
             <section className="flex-grow grid grid-cols-2 gap-4">
               <div>
                 <DashboardSectionHeader
-                  title={name ? `${name} hubs` : "Hubs"}
-                />
+                  title={website.name ? `${website.name} hubs` : "Hubs"}
+                >
+                  <div className="">
+                    <NewHubModalButton
+                      websiteName={website.name}
+                      websiteId={websiteId}
+                      userId={userId}
+                    >
+                      Create
+                    </NewHubModalButton>
+                  </div>
+                </DashboardSectionHeader>
                 <Suspense fallback={<div>Loading Hubs...</div>}>
                   <HubListTable
                     websiteId={websiteId}

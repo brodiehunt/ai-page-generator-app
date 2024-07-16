@@ -39,7 +39,9 @@ const NoHubsAvailable = ({ websiteName, websiteId, userId }) => {
             websiteName={websiteName}
             websiteId={websiteId}
             userId={userId}
-          />
+          >
+            Create New Hub
+          </NewHubModalButton>
         </div>
       </div>
     </div>

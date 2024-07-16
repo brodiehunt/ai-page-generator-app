@@ -4,7 +4,7 @@ import Button from "@/src/components/shared/Button";
 import NewHubModalForm from "@/src/components/shared/HubLists/NewHubModal";
 import { FaPlusCircle } from "react-icons/fa";
 
-const NewHubModalButton = ({ websiteName, websiteId, userId }) => {
+const NewHubModalButton = ({ websiteName, websiteId, userId, children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleModalToggle = () => {
@@ -20,7 +20,7 @@ const NewHubModalButton = ({ websiteName, websiteId, userId }) => {
         extraClasses="py-1.5 px-4 h-fit w-fit text-sm flex gap-2 items-center"
       >
         <FaPlusCircle />
-        Create New Hub
+        {children}
       </Button>
       {isOpen && (
         <NewHubModalForm
