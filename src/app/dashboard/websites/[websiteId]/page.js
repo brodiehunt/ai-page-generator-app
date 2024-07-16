@@ -5,6 +5,8 @@ import DashboardSectionHeader from "@/src/components/shared/dashboard/DashboardS
 import HubListTable from "@/src/components/shared/HubLists/HubListTable";
 import NewHubModalButton from "@/src/components/shared/HubLists/NewHubModalButton";
 import { Suspense } from "react";
+import { websiteTools } from "@/src/components/shared/Tools/ToolsData";
+import ToolsSection from "@/src/components/shared/Tools/ToolsSection";
 
 const fetchWebsiteData = async (websiteId) => {
   try {
@@ -38,7 +40,14 @@ export default async function SingleWebsitePage({ params }) {
   const session = await auth();
   const userId = session?.user.id;
   const { error, website } = await fetchWebsiteData(websiteId);
-
+  const customWebsiteTools = websiteTools.map((webTool) => {
+    if (webTool.link?.href) {
+      const pattern = /websiteId/g;
+      const resultString = webTool.link.href.replace(pattern, websiteId);
+      webTool.link.href = resultString;
+    }
+    return webTool;
+  });
   return (
     <div className="flex flex-col pr-4">
       {!error && (
@@ -47,8 +56,12 @@ export default async function SingleWebsitePage({ params }) {
             title={website.name ? website.name : "Website"}
           />
           <DashboardPagesContainer>
-            <DashboardSectionHeader title="Website Tools" />
-            <div className="flex gap-4 justify-start"></div>
+            <section>
+              <DashboardSectionHeader title="Website Tools" />
+              <ToolsSection tools={customWebsiteTools} />
+            </section>
+
+            {/* </div> */}
             {/* 
           This page needs:
           1. Top Section Tools (LongTail, blog, hub, allInOne)
