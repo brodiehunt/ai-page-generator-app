@@ -3,18 +3,8 @@ import { PiSpinnerBallDuotone } from "react-icons/pi";
 import { GlobeAltIcon } from "@heroicons/react/20/solid";
 import { ClipboardDocumentListIcon } from "@heroicons/react/24/solid";
 import { TbSeo } from "react-icons/tb";
-import NewWebsiteModalButton from "../WebsiteLists/NewWebsiteModalButton";
+
 export const dashboardTools = [
-  {
-    title: "Get started by creating a website",
-    icon: GlobeAltIcon,
-    text: "Creating a website allows you to keep all your related blogs and data in one place",
-    button: NewWebsiteModalButton,
-    link: {
-      href: "/",
-      text: "Create New Website",
-    },
-  },
   {
     title: "Generate Longtail Blogs",
     icon: MdLink,
@@ -40,45 +30,6 @@ export const dashboardTools = [
     link: {
       href: "/dashboard/spoke-generator",
       text: "Create spokes here",
-    },
-  },
-];
-
-export const websiteTools = [
-  {
-    title: "Learn More",
-    icon: ClipboardDocumentListIcon,
-    text: "Learn what you can achieve from the website dashboard page",
-    link: {
-      href: "/",
-      text: "Go to Docs",
-    },
-  },
-  {
-    title: "Modify Your Matrix!",
-    icon: TbSeo,
-    text: "Your SEO matrix is the driving force behind AI content creation.",
-    link: {
-      href: "/dashboard/websites/websiteId/seoMatrix",
-      text: "Go to Matrix page",
-    },
-  },
-  {
-    title: "Hubs Page",
-    icon: MdHub,
-    text: "View, Generate and control your hubs.",
-    link: {
-      href: "/dashboard/websites/websiteId/hubs",
-      text: "Go to Hubs page",
-    },
-  },
-  {
-    title: "Spokes Page",
-    icon: MdSpoke,
-    text: "View, Generate and control your spokes.",
-    link: {
-      href: "/dashboard/websites/websiteId/spokes",
-      text: "Go to spokes page",
     },
   },
 ];
