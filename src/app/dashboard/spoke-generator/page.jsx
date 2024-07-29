@@ -9,11 +9,6 @@ export default function SpokeGeneratorPage() {
       <DashboardPagesContainer>
         <DashboardSectionHeader title="Spoke Generator Tools" />
         <div className="flex gap-4 justify-start"></div>
-        {/* 
-          This page needs:
-          1. Top Section Tools (LongTail, blog, hub, allInOne)
-          2. Websites (Title, Container, search, filter, add new);
-        */}
       </DashboardPagesContainer>
     </div>
   );

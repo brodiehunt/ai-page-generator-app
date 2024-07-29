@@ -1,18 +1,10 @@
 import { MdDashboard, MdHub, MdSpoke, MdLogout, MdLink } from "react-icons/md";
 import { PiSpinnerBallDuotone } from "react-icons/pi";
 import { GlobeAltIcon } from "@heroicons/react/20/solid";
-import NewWebsiteModalButton from "../WebsiteLists/NewWebsiteModalButton";
+import { ClipboardDocumentListIcon } from "@heroicons/react/24/solid";
+import { TbSeo } from "react-icons/tb";
+
 export const dashboardTools = [
-  {
-    title: "Get started by creating a website",
-    icon: GlobeAltIcon,
-    text: "Creating a website allows you to keep all your related blogs and data in one place",
-    button: NewWebsiteModalButton,
-    link: {
-      href: "/",
-      text: "Create New Website",
-    },
-  },
   {
     title: "Generate Longtail Blogs",
     icon: MdLink,

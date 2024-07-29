@@ -1,10 +1,7 @@
 import DashboardNavLink from "./DashboardNavLink";
-import { GlobeAltIcon } from "@heroicons/react/20/solid";
 import { ClipboardDocumentListIcon } from "@heroicons/react/24/solid";
 import { MdDashboard, MdHub, MdSpoke, MdLogout, MdLink } from "react-icons/md";
 import { PiSpinnerBallDuotone } from "react-icons/pi";
-import { signOut } from "@/auth";
-import { redirect } from "next/navigation";
 import SignOutButton from "@/src/components/shared/SignOutButton";
 
 const navLinks = [
@@ -12,12 +9,6 @@ const navLinks = [
     name: "Dashboard",
     icon: MdDashboard,
     href: "/dashboard",
-    extraClass: "",
-  },
-  {
-    name: "Websites",
-    icon: GlobeAltIcon,
-    href: "/dashboard/websites",
     extraClass: "",
   },
   {

@@ -1,33 +1,30 @@
 "use client";
-import WebsiteSelectedHeader from "./WebsiteSelectedHeader";
-import ExcelUploadForm from "./ExcelUploadForm";
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import SEOMatrixFileUpload from "../allInOne/SEOMatrixFileUpload";
+import GenerateLongtailForm from "./GenerateLongtailForm";
+import HubsAndSpokesList from "./hubsAndSpokesList";
 
-export default function LongtailGeneratorClientWrapper({
-  websiteDataServerLoad,
-}) {
-  const [websiteName, setWebsiteName] = useState(
-    websiteDataServerLoad?.websiteName
-  );
-  const [seoMatrix, setSeoMatrix] = useState(null);
+const initialSeoMatrix = {
+  hubs: "",
+  spokeVariants: "",
+  customerNeedVariants: "",
+  fillerWords: "",
+  targetAudience: "",
+};
 
-  const isNotFirstRender = useRef(false);
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    if (isNotFirstRender.current) {
-      //make api call here
-      const newSiteName = searchParams.get("websiteName");
-      setWebsiteName(newSiteName);
-    }
-    isNotFirstRender.current = true;
-  }, [searchParams]);
+export default function LongtailGeneratorClientWrapper({}) {
+  const [seoMatrix, setSeoMatrix] = useState(initialSeoMatrix);
+  const [hubsAndSpokes, setHubsAndSpokes] = useState([]);
 
   return (
-    <div className="">
-      <WebsiteSelectedHeader websiteName={websiteName} />
-      <ExcelUploadForm />
+    <div className="grid gap-4">
+      <SEOMatrixFileUpload setSeoMatrix={setSeoMatrix} />
+      <GenerateLongtailForm
+        seoMatrix={seoMatrix}
+        setHubsAndSpokes={setHubsAndSpokes}
+      />
+      <HubsAndSpokesList hubsAndSpokes={hubsAndSpokes} />
     </div>
   );
 }
