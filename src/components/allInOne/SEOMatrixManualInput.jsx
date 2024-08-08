@@ -16,6 +16,7 @@ function transformResponseToStateArray(responseArray, websiteName) {
     hubObj.seoMeta.seoTitle = `${websiteName} | ${hubObj.hub}`;
     hubObj.spokes.forEach((spoke) => {
       spoke.id = uuid();
+      spoke.regenerate = false;
       spoke.seoMeta.seoTitle = `${websiteName} | ${spoke.title}`;
     });
   });
@@ -65,7 +66,6 @@ const SEOMatrixManualInput = ({
 
       websiteInfoSchema.parse(websiteInfo);
     } catch (error) {
-      console.log("Didnt go into catch block?");
       const newErrorsObject = {};
       error.issues.forEach((errorObj) => {
         newErrorsObject[errorObj.path] = errorObj.message;
@@ -93,7 +93,6 @@ const SEOMatrixManualInput = ({
       };
       const stringData = JSON.stringify(postObj);
 
-      console.log(stringData);
       const response = await fetch("/api/chatgpt/generateLongTail", {
         method: "POST",
         body: stringData,
@@ -106,12 +105,11 @@ const SEOMatrixManualInput = ({
 
       const responseData = await response.json();
 
-      /// This is where we will format the content:
       const transformedArray = transformResponseToStateArray(
         responseData.data,
         websiteInfo.websiteName
       );
-      console.log(transformedArray);
+
       setSuccess("Longtails generated! Check below for output");
       setHubsAndSpokes(transformedArray);
     } catch (error) {

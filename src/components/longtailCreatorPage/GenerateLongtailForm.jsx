@@ -76,7 +76,6 @@ const GenerateLongtailForm = ({ seoMatrix, setHubsAndSpokes }) => {
       const transformedArray = transformResponseToStateArray(responseData.data);
       setSuccess("Longtails generated! Check below for output");
       setHubsAndSpokes(transformedArray);
-      console.log("The hubs and blogs", transformedArray);
     } catch (error) {
       console.log("Error", error);
       setError(error.message);

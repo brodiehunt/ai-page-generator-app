@@ -11,58 +11,83 @@ function wrapInGutenbergBlocks(contentArray) {
         .map(([key, value]) => {
           switch (key) {
             case "h1":
+              if (Array.isArray(value)) {
+                return `
+                  <!-- wp:heading {"level":1} -->
+                  <h1>${wrapInGutenbergBlocks(value)}</h1>
+                  <!-- /wp:heading -->`;
+              }
               return `
-              <!-- wp:heading {"level":1} -->
-              <h1>${value}</h1>
-              <!-- /wp:heading -->`;
+                  <!-- wp:heading {"level":1} -->
+                  <h1>${value}</h1>
+                  <!-- /wp:heading -->`;
             case "h2":
+              if (Array.isArray(value)) {
+                return `
+                  <!-- wp:heading {"level":2} -->
+                  <h2>${wrapInGutenbergBlocks(value)}</h2>
+                  <!-- /wp:heading -->`;
+              }
               return `
               <!-- wp:heading {"level":2} -->
               <h2>${value}</h2>
               <!-- /wp:heading -->`;
             case "h3":
+              if (Array.isArray(value)) {
+                return `
+                  <!-- wp:heading {"level":3} -->
+                  <h3>${wrapInGutenbergBlocks(value)}</h3>
+                  <!-- /wp:heading -->`;
+              }
               return `
               <!-- wp:heading {"level":3} -->
               <h3>${value}</h3>
               <!-- /wp:heading -->`;
             case "h4":
+              if (Array.isArray(value)) {
+                return `
+                  <!-- wp:heading {"level":4} -->
+                  <h4>${wrapInGutenbergBlocks(value)}</h4>
+                  <!-- /wp:heading -->`;
+              }
               return `
               <!-- wp:heading {"level":4} -->
               <h4>${value}</h4>
               <!-- /wp:heading -->`;
             case "p":
+              if (Array.isArray(value)) {
+                return `
+                  <!-- wp:paragraph -->
+                  <p>${wrapInGutenbergBlocks(value)}</p>
+                  <!-- /wp:paragraph -->`;
+              }
               return `
               <!-- wp:paragraph -->
               <p>${value}</p>
               <!-- /wp:paragraph -->`;
             case "ul":
-              const listItems = value
-                .map((item) => {
-                  return wrapInGutenbergBlocks([item]);
-                })
-                .join("\n");
-              return `<!-- wp:list -->
-                      <ul>
-                      ${listItems}
-                      </ul>
-                      <!-- /wp:list -->`;
+              if (Array.isArray(value)) {
+                return `
+                  <!-- wp:list -->
+                  <ul>${wrapInGutenbergBlocks(value)}</ul>
+                  <!-- /wp:list -->`;
+              }
+              break;
             case "ol":
-              const orderedListItems = value
-                .map((item) => {
-                  if (typeof item === "object") {
-                    return wrapInGutenbergBlocks([item]);
-                  }
-                  return `<li>${item}</li>`;
-                })
-                .join("\n");
-              return `<!-- wp:list {"ordered":true} -->
-                      <ol>
-                      ${orderedListItems}
-                      </ol>
-                      <!-- /wp:list -->`;
+              if (Array.isArray(value)) {
+                return `
+                  <!-- wp:list -->
+                  <ol>${wrapInGutenbergBlocks(value)}</ol>
+                  <!-- /wp:list -->`;
+              }
+
             case "li":
-              if (typeof value === "object") {
-                return `<li>${wrapInGutenbergBlocks(value)}</li>`;
+              console.log("li value", value);
+              if (Array.isArray(value)) {
+                return `
+                  
+                  <li>${wrapInGutenbergBlocks(value)}</li>
+                  `;
               }
               return `<li>${value}</li>`;
             case "blockquote":
@@ -71,10 +96,14 @@ function wrapInGutenbergBlocks(contentArray) {
               <blockquote>${value}</blockquote>
               <!-- /wp:quote -->`;
             case "a":
-              return `
-              <!-- wp:paragraph -->
-              <p><a href="${value.href}">${value.text}</a></p>
-              <!-- /wp:paragraph -->`;
+              console.log("anchor tag", value);
+              if (typeof value === "object" && value.href && value.text) {
+                return `
+                  <!-- wp:paragraph -->
+                  <p><a href="${value.href}">${value.text}</a></p>
+                  <!-- /wp:paragraph -->`;
+              }
+              break;
             case "div":
               return `
               <!-- wp:group -->
@@ -101,44 +130,3 @@ function wrapInGutenbergBlocks(contentArray) {
     })
     .join("\n");
 }
-// function wrapInGutenbergBlocks(contentArray) {
-//   return contentArray
-//     .map((block) => {
-//       if (block.h2) {
-//         return `
-//         <!-- wp:heading {"level":2} -->
-//         <h2>${block.h2}</h2>
-//         <!-- /wp:heading -->`;
-//       } else if (block.p) {
-//         return `
-//         <!-- wp:paragraph -->
-//         <p>${block.p}</p>
-//         <!-- /wp:paragraph -->`;
-//       } else if (block.h1) {
-//         return `
-//         <!-- wp:heading {"level":1} -->
-//         <h1>${block.h1}</h1>
-//         <!-- /wp:heading -->`;
-//       } else if (block.h3) {
-//         return `
-//         <!-- wp:heading {"level":3} -->
-//         <h3>${block.h3}</h3>
-//         <!-- /wp:heading -->`;
-//       } else if (block.h4) {
-//         return `
-//         <!-- wp:heading {"level":4} -->
-//         <h1>${block.h4}</h1>
-//         <!-- /wp:heading -->`;
-//       } else if (block.ul) {
-//         const listItems = block.ul
-//           .map((item) => `<li>${item.li}</li>`)
-//           .join("\n");
-//         return `<!-- wp:list -->
-//                 <ul>
-//                 ${listItems}
-//                 </ul>
-//                 <!-- /wp:list -->`;
-//       }
-//     })
-//     .join("\n");
-// }

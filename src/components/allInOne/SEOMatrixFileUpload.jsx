@@ -42,7 +42,6 @@ const SEOMatrixFileUpload = ({ setSeoMatrix }) => {
         const jsonData = utils.sheet_to_json(worksheet, { header: 1 });
 
         const columns = jsonData[0];
-        console.log("Columns:", columns);
 
         const dataObject = {};
 
@@ -57,7 +56,7 @@ const SEOMatrixFileUpload = ({ setSeoMatrix }) => {
             }
           });
         });
-        console.log(dataObject);
+
         const stateValue = formatFileDataForState(dataObject);
         setSeoMatrix(stateValue);
       };

@@ -40,6 +40,7 @@ const WebsiteContextInputs = ({
           </label>
           <div className="relative flex items-center mt-2">
             <input
+              id="websiteName"
               type="text"
               name="websiteName"
               ref={websiteNameRef}
@@ -68,6 +69,7 @@ const WebsiteContextInputs = ({
           </label>
           <div className="relative flex items-center mt-2">
             <input
+              id="websiteUrl"
               type="text"
               name="websiteUrl"
               ref={websiteUrlRef}
@@ -186,12 +188,13 @@ const WebsiteContextInputs = ({
           </label>
           <div className="relative flex items-center mt-2">
             <input
+              id="blogBaseUrl"
               type="text"
               name="blogBaseUrl"
               ref={blogBaseUrlRef}
               value={websiteInfo.blogBaseUrl}
               onChange={handleWebsiteInfoChange}
-              placeholder="https://cogdigital.com.au/news/"
+              placeholder="https://cogdigital.com.au/news"
               className={`block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg px-3 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 ${
                 websiteInfoErrors.blogBaseUrl &&
                 "border-red-400 focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 "
@@ -252,7 +255,7 @@ const WebsiteContextInputs = ({
             onChange={handleWebsiteInfoChange}
             rows="4"
             ref={websiteContextRef}
-            id="companyContext"
+            id="websiteContext"
             placeholder="COG digital are accomplished marketing experts with over 20 years of experience. COG Digital's expertise lies in building brands and executing clever marketing for brandins and small businesses for a diverse client base, with a specialization in Australian small business. COG Digital's clients include executives, entreprenous, and thought leaders who seek to inspire and engage their audiences on global platforms."
             className={`block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg px-3 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 text-xs ${
               websiteInfoErrors.websiteContext &&

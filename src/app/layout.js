@@ -13,17 +13,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* <header className="flex justify-between gap-4 p-4 lg:px-8 max-w-[1440px] mx-auto">
-          <div className="Logo">
-            <Link href="/">Home</Link>
-          </div>
-          <nav className="flex justify-end gap-4">
-            <Link href="/allInOneGenerator">All In One Creator</Link>
-            <Link href="/hubCreator">Hub Creator</Link>
-            <Link href="/blogCreator">Blog Creator</Link>
-            <Link href="/longtailCreator">Longtail Creator</Link>
-          </nav>
-        </header> */}
         <div className="max-w-[1980px] mx-auto">{children}</div>
       </body>
     </html>

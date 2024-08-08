@@ -1,3 +1,59 @@
+const formatPrompt = `
+  You do not have to follow the order set out above. The main priority is to produce engaging and quality content that flows logically and is relevant. Use a conversational tone that engages the reader. Write as if you are speaking directly to the reader, using 'you' and 'we' where appropriate. You are NOT to mention terms like 'keyphrases', 'hubs' or 'spokes' directly. Eg: Do not write 'This hub is about...'. These are described to you purely for your understanding. Write with sophistication and conviction on this topic. 
+  The content you generate should be structured in JSON format, with each block level html element represented as its own object where the key is the html element tag (h2, h3, h4, p, div, section etc), and its value (either a string or an ARRAY of nested objects). The value of a property CANNOT be an object alone. It must be an array of objects, even if there is only one object. Inline level text html elements like a, span, strong, b, etc can be included within a string (does not need its own object). You are never to use markdown format or any other type of format. An example of an acceptable response would be:
+  { content: [
+  {'h2': 'This would be a h2'},
+  {'p': 'This would be a <a href="/parahgraph">paragraph</a>'},
+  {'p': 'This would be a <strong>STRONG</strong> inclusion'},
+  {'ul': [
+    {'li': 'This is how you would structure an unordered list'}, 
+    {'li': 'Another list with <b>bold</b> text element'},
+    {'li': [
+        {'h3': 'nested content works like this'},
+        {'p': 'Nested paragraph'}
+      ]
+    },
+  ]},
+  ]}
+  This is an example of unacceptaple content:
+  { content: [
+  {'h2': { 'span': 'span elements do not get their own object'}},
+  {'ul': [
+    {'li': 'This is how you would structure an unordered list'}, 
+    {'li': { 'p': 'Objects are NOT allowed to be properties!'}},
+    {'li': [{ 'p': 'This is how it SHOULD be handled!'}]},
+    {'li': [
+        {'h3': 'an object must always be nested in an array. Like this.'},
+        {'p': { 'span': 'NOT LIKE THIS! This isn't allowed}}
+      ]
+    },
+  ]},
+  ]}
+  NOTE: You are never to use a h1 element.
+  Your response should be in British English.
+
+`;
+
+export const buildPostAnecdotePrompt = ({
+  spoke,
+  otherSpokesTitleAndUrl,
+  hubData,
+  websiteData,
+}) => {
+  const {
+    title: blogName,
+    seoMatrix: { targetAudience, customerNeedVaraint, spokeVariant: keyPhrase },
+  } = spoke;
+  const { hubName, hubUrl } = hubData;
+  const { websiteName, websiteUrl, websiteContext, highDaBackLinks } =
+    websiteData;
+  return `
+    You are a skilled content writer who specializes in writing SEO-optimized content for the company ${websiteName}. ${websiteName} is using a hub and spoke SEO content model on their website to generate organic traffic. You are writing a blog post titled "${blogName}", which is a spoke within the model mentioned before. Its hub topic is "${hubName}". The keyphrase (keyword) for this blog is "${keyPhrase}". Some context on ${websiteName} is: "${websiteContext}".
+    Your objective is to write me a small business anecdote, where a ${targetAudience} has made a mistake by not understanding / or implmeneting ${keyPhrase}, and then ${websiteName} came along and fixed it. This anecdote should relate to the title of this blog which is ${blogName}. This anecdote should be thought-provoking,inspiring, and geared towards an Australian audience. It should be structured to hold the reader's attention from beginning to end, incorporating storytelling, clear messaging, and powerful calls to action. Integrate rhetorical devices and storytelling techniques to make the blog more memorable and impactful. Use metaphors, analogies, and vivid imagery to create a strong connection with the reader.
+    ${formatPrompt}
+  `;
+};
+
 export const buildPostIntroPrompt = ({
   spoke,
   otherSpokesTitleAndUrl,
@@ -9,7 +65,13 @@ export const buildPostIntroPrompt = ({
     seoMatrix: { targetAudience, customerNeedVaraint, spokeVariant: keyPhrase },
   } = spoke;
   const { hubName, hubUrl } = hubData;
-  const { websiteName, websiteUrl, websiteContext } = websiteData;
+  const { websiteName, websiteUrl, websiteContext, highDaBackLinks } =
+    websiteData;
+
+  const randomIndex = Math.floor(Math.random() * highDaBackLinks.length);
+  const embedDaLink = highDaBackLinks.length
+    ? highDaBackLinks[randomIndex]
+    : "";
   const prompt = `You are a skilled content writer who specialises in writing SEO optimized content for the company ${websiteName}. ${websiteName} is using a hub and spoke SEO content model on their website to generate organic traffic. You are writing a blog post titled ${blogName}, which is a spoke within the model mentioned before. Its hub topic is ${hubName}. The keyphrase (keyword) for this blog is ${keyPhrase} and the keyphrase for its related spoke is ${hubName}. Some context on ${websiteName} is: "${websiteContext}".
     Youre objective is to write an engaging introduction of about 200 words for this blog post. The introduction should:
     1. Cleary introduct the topic "${blogName}" and explain it's relevance to the readers.
@@ -21,14 +83,11 @@ export const buildPostIntroPrompt = ({
     7. Encourage readers to explore related content within the hub and spoke model by referencing the hub topic "${hubName}" and linking to it (${
     websiteUrl + "/" + hubUrl
   })
-      NOTE: This section does not require a title.
-      The content you generate should be structured in JSON format, with each object representing a block of html content. The content tags (h2, h3, p, a, b, strong etc) should be used appropriately, and the value should be the content. An example would be:
-    { content: [
-    {'h2': 'This would be a h2'},
-    {'p': 'This would be a paragraph'},
-    {'p': 'This would be a <strong>STRONG</strong> inclusion'},
-    {'ul': [{'li': 'This is how you would structure an unordered list'}, {'li': 'Another list item'}]},
-    ]}
+  ${
+    embedDaLink &&
+    `8. When you mention ${websiteName}, create a link to ${embedDaLink} that opens a new tab. Only do this once. The linked text must be '${websiteName}'`
+  }
+  ${formatPrompt}
   `;
   return prompt;
 };
@@ -58,13 +117,7 @@ Your objective is to write a detailed section about "What is ${keyPhrase} and wh
 6. Keep in mind that the target audience is ${targetAudience} and the need we are addressing is ${customerNeedVaraint}
 7. Keep the content within a word limit of 300 words.
 
-The content you generate should be structured in JSON format, with each object representing a block of HTML content. The content tags (h2, h3, p, a, b, strong, etc.) should be used appropriately. An example would be:
-{ content: [
-{'h2': 'A Catchy Title for "What is ${keyPhrase} and why does it matter?"'},
-{'p': 'This would be a paragraph explaining the term.'},
-{'p': 'This would be another paragraph discussing its importance.'},
-{'ul': [{'li': 'This is how you would structure an unordered list'}, {'li': 'Another list item'}]},
-]}
+${formatPrompt}
   `;
 };
 
@@ -92,13 +145,7 @@ export const buildPostHistoryTermPrompt = ({
     5. Use a tone and style that reflects the brand voice of "${websiteName}" and engages the audience.
     6. Keep the content within a word limit of 300 words.
 
-    The content you generate should be structured in JSON format, with each object representing a block of HTML content. The content tags (h2, h3, p, a, b, strong, etc.) should be used appropriately. An example would be:
-    { content: [
-    {'h2': 'A Catchy Title for "The History of ${keyPhrase}" in Relation to "${blogName}"'},
-    {'p': 'This would be a paragraph elaborating on the background.'},
-    {'p': 'This would be another paragraph discussing the development over time.'},
-    {'ul': [{'li': 'This is how you would structure an unordered list'}, {'li': 'Another list item'}]},
-    ]}
+    ${formatPrompt}
   `;
 };
 
@@ -126,12 +173,7 @@ export const buildPostTermsToKnowPrompt = ({
   }). Be sparse with this linking and only include if it fits well.
     5. Use a tone and style that reflects the brand voice of "${websiteName}" and engages the audience.
     6. Keep the content within a word limit of 300 words.
-    The content you generate should be structured in JSON format, with each object representing a block of HTML content. The content tags (h2, h3, p, a, b, strong, etc.) should be used appropriately. An example would be:
-    { content: [
-    {'h2': 'A Catchy Title for "Terms to Know"'},
-    {'p': 'This would be a paragraph introducing the section.'},
-    {'ul': [{'li': 'Term 1: Definition and relevance.'}, {'li': 'Term 2: Definition and relevance.'}, {'li': 'Term 3: Definition and relevance.'}]},
-    ]}
+    ${formatPrompt}
   `;
 };
 
@@ -158,13 +200,7 @@ export const buildPostProsConsPrompt = ({
     5. Use a tone and style that reflects the brand voice of "${websiteName}" and engages the audience.
     6. Keep the content within a word limit of 300 words.
 
-    The content you generate should be structured in JSON format, with each object representing a block of HTML content. The content tags (h2, h3, p, a, b, strong, etc.) should be used appropriately. An example would be:
-    { content: [
-    {'h2': 'A Catchy Title for "The Pros and Cons of ${keyPhrase}"'},
-    {'p': 'This would be a paragraph introducing the section.'},
-    {'ul': [{'li': 'Pro 1: Explanation and relevance.'}, {'li': 'Pro 2: Explanation and relevance.'}]},
-    {'ul': [{'li': 'Con 1: Explanation and relevance.'}, {'li': 'Con 2: Explanation and relevance.'}]},
-    ]}
+    ${formatPrompt}
   `;
 };
 
@@ -209,17 +245,7 @@ export const buildPostHowToPrompt = ({
     6. Remember that the target audience has to do with ${targetAudience} and the need we are addressing has to do with ${customerNeedVaraint}
     7. Keep the content within a word limit of 300 words.
 
-    The content you generate should be structured in JSON format, with each object representing a block of HTML content. The content tags (h2, h3, p, a, b, strong, etc.) should be used appropriately. An example would be:
-    { content: [
-    {'h2': 'A Catchy Title for "How to ${keyPhrase}"'},
-    {'p': 'This would be a paragraph introducing the section.'},
-    {'ol': [
-        {'li': 'Step 1: Explanation of the first step.'},
-        {'li': 'Step 2: Explanation of the second step.'},
-        {'li': 'Step 3: Explanation of the third step.'},
-    ]},
-    {'p': 'This would be a paragraph providing an example to illustrate the process.'},
-    ]}
+    ${formatPrompt}
   `;
 };
 
@@ -244,23 +270,13 @@ export const buildPostTipsPrompt = ({
     3. Ensure the tips and reminders are clear, concise, and actionable.
     4. Use examples or scenarios to illustrate the tips and reminders where applicable.
     5. Use a tone and style that reflects the brand voice of "${websiteName}" and engages the audience.
-    6. Mention related spoke articles to provide additional insights and information (ONLY IF IT IS RELEVANT TO WHAT YOU ARE TALKING ABOUT): ${otherSpokesTitleAndUrl
+    6. Mention related spoke articles to provide additional insights and information (ONLY IF IT IS RELEVANT TO WHAT YOU ARE TALKING ABOUT). Do not link to the page, rather just bold the text where the link will go: ${otherSpokesTitleAndUrl
       .map((spoke) => `${spoke.spokeName} (${spoke.spokeUrl})`)
       .join(", ")}.
     7. Remember that the target audience has to do with ${targetAudience} and the need we are addressing has to do with ${customerNeedVaraint}
     8. Keep the content within a word limit of 400 words.
 
-    The content you generate should be structured in JSON format, with each object representing a block of HTML content. The content tags (h2, h3, p, a, b, strong, etc.) should be used appropriately. An example would be:
-    { content: [
-    {'h2': 'A Catchy Title for "Tips and Reminders for ${keyPhrase}"'},
-    {'p': 'This would be a paragraph introducing the section.'},
-    {'ul': [
-        {'li': 'Tip 1: Explanation of the first tip.'},
-        {'li': 'Tip 2: Explanation of the second tip.'},
-        {'li': 'Tip 3: Explanation of the third tip.'},
-    ]},
-    {'p': 'This would be a paragraph providing an example or reminder to illustrate the tips.'},
-    ]}
+    ${formatPrompt}
   `;
 };
 
@@ -275,7 +291,12 @@ export const buildPostConclPrompt = ({
     seoMatrix: { targetAudience, customerNeedVaraint, spokeVariant: keyPhrase },
   } = spoke;
   const { hubName, hubUrl } = hubData;
-  const { websiteName, websiteUrl, websiteContext } = websiteData;
+  const { websiteName, websiteUrl, websiteContext, highDaBackLinks } =
+    websiteData;
+  const randomIndex = Math.floor(Math.random() * highDaBackLinks.length);
+  const embedDaLink = highDaBackLinks.length
+    ? highDaBackLinks[randomIndex]
+    : "";
   return `
     You are a skilled content writer who specializes in writing SEO-optimized content for the company ${websiteName}. ${websiteName} is using a hub and spoke SEO content model on their website to generate organic traffic. You are writing a blog post titled "${blogName}", which is a spoke within the model mentioned before. Its hub topic is "${hubName}". The keyphrase (keyword) for this blog is "${keyPhrase}". Some context on ${websiteName} is: "${websiteContext}".
     Your objective is to write a compelling closing section for this blog post from the perspective of ${websiteName}. Generate a catchy and engaging closing paragraph based on the key points and significance of the blog post. This section should:
@@ -285,17 +306,15 @@ export const buildPostConclPrompt = ({
     3. Encourage readers to learn more about ${hubName} by pointing them to the webpage ${
     websiteUrl + "/" + hubUrl
   }.
-  4. Encourage readers to explore related content within the hub and spoke model by referencing potentially related spoke articles: ${otherSpokesTitleAndUrl
+  4. Encourage readers to explore related content within the hub and spoke model by referencing potentially related spoke articles. Do not link to the page, rather just bold the text where the link will go: ${otherSpokesTitleAndUrl
     .map((spoke) => `${spoke.spokeName} (${spoke.spokeUrl})`)
     .join(", ")}. NOTE: ONLY IF THEY ARE RELATED!
     5. Use a tone and style that reflects the brand voice of "${websiteName}" and leaves a lasting impression on the audience.
     6. Keep the content within a word limit of 200 words.
-
-    The content you generate should be structured in JSON format, with each object representing a block of HTML content. The content tags (h2, h3, p, a, b, strong, etc.) should be used appropriately. An example would be:
-    { content: [
-    {'h2': 'A Catchy Title for the Closing Section'},
-    {'p': 'This would be a paragraph summarizing the key takeaways.'},
-    {'p': 'This would be another paragraph encouraging readers to explore other resources.'},
-    ]}
+    ${
+      embedDaLink &&
+      `7. When you mention ${websiteName}, create a link to ${embedDaLink} that opens a new tab. Only do this once. The linked text must be '${websiteName}'`
+    }
+    ${formatPrompt}
   `;
 };

@@ -7,6 +7,7 @@ import {
   privateRoutes,
 } from "@/routes";
 
+// Auth middleware function to redirect users.
 export default auth((req) => {
   console.log("--------------New MiddleWare call -----------------");
   const { nextUrl } = req;
@@ -16,28 +17,26 @@ export default auth((req) => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
+  // If it is a auth route -> always allow
   if (isApiAuthRoute) return null;
 
   if (isAuthRoute) {
+    // If user visits login or register whilst signed in -> redirect to dashboard.
     if (isLoggedIn) {
-      // console.log("GOING TO REDIRECT TO DASHBOARD");
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-    // console.log("returning null when api route");
+
     return null;
   }
 
+  // If private route and not logged in -> redirect to login page.
   if (!isLoggedIn && !isPublicRoute) {
-    // console.log("GOING TO REDIRECT TO LOGIN");
     return Response.redirect(new URL("/auth/login", nextUrl));
   }
 
-  // console.log("RETURNING NULL WTF");
   return null;
 });
 
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
-
-// matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],

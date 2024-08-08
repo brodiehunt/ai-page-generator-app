@@ -5,13 +5,17 @@ import {
   addSingleBlogItem,
   addSinglePageItem,
   addSingleBlogItemDivi,
+  addSinglePageItemDivi,
 } from "@/src/utils/xmlBuilder/xmlBuilder";
 
 import {
-  buildPageIntroductionPrompt,
-  buildPageFirstBodyParagraphPrompt,
-  buildPageSecondBodyParagraphPrompt,
-  buildPageConclusionPrompt,
+  buildIntroductionPrompt,
+  buildKeyConceptsPrompt,
+  buildBenefitsPrompt,
+  buildBestPracticesPrompt,
+  buildFutureTrendsPrompt,
+  buildExamplesPrompt,
+  buildConclusionPrompt,
 } from "@/src/utils/prompts/allInOne/pagePrompts";
 
 import {
@@ -23,6 +27,7 @@ import {
   buildPostHowToPrompt,
   buildPostTipsPrompt,
   buildPostConclPrompt,
+  buildPostAnecdotePrompt,
 } from "@/src/utils/prompts/allInOne/postPrompts";
 
 import { formatGutenburg } from "@/src/utils/formatContent/formatGutenburg";
@@ -101,8 +106,11 @@ export async function POST(request) {
 const buildSinglePage = async ({ hub, websiteData, channel, index }) => {
   console.log("_______ENTER BUILD PAGE_______");
   let introPrompt;
-  let firstBodyParagraphPrompt;
-  let secondBodyParagraphPrompt;
+  let keyConceptsPrompt;
+  let benefitsPrompt;
+  let bestPracticePrompt;
+  let futureTrendsPrompt;
+  let examplesPrompt;
   let conclusionPrompt;
 
   const {
@@ -112,33 +120,52 @@ const buildSinglePage = async ({ hub, websiteData, channel, index }) => {
     seoMeta: { theExcerpt, seoDescription, seoTitle, seoKeyphrase },
   } = hub;
   const { websiteUrl, websiteName } = websiteData;
-  const spokesData = spokes.map(({ title, focusKeyPhrase, slug }) => {
-    title, focusKeyPhrase, slug;
+  const spokesData = spokes.map((spoke) => {
+    return {
+      title: spoke.title,
+      focusKeyPhrase: spoke.focusKeyPhrase,
+      slug: spoke.slug,
+    };
   });
   const hubData = { hubName, hubUrl, seoMeta: hub.seoMeta };
   try {
-    introPrompt = buildPageIntroductionPrompt({
+    introPrompt = buildIntroductionPrompt({
       spokesData,
       hubData,
       websiteData,
     });
-    firstBodyParagraphPrompt = buildPageFirstBodyParagraphPrompt({
+    keyConceptsPrompt = buildKeyConceptsPrompt({
       spokesData,
       hubData,
       websiteData,
     });
-    secondBodyParagraphPrompt = buildPageSecondBodyParagraphPrompt({
+    benefitsPrompt = buildBenefitsPrompt({
       spokesData,
       hubData,
       websiteData,
     });
-    conclusionPrompt = buildPageConclusionPrompt({
+    bestPracticePrompt = buildBestPracticesPrompt({
+      spokesData,
+      hubData,
+      websiteData,
+    });
+    futureTrendsPrompt = buildFutureTrendsPrompt({
+      spokesData,
+      hubData,
+      websiteData,
+    });
+    examplesPrompt = buildExamplesPrompt({
+      spokesData,
+      hubData,
+      websiteData,
+    });
+    conclusionPrompt = buildConclusionPrompt({
       spokesData,
       hubData,
       websiteData,
     });
   } catch (error) {
-    console.log("Build page prompt error", error);
+    console.error("Build page prompt error", error);
     throw { message: "Error constructing prompts.", title: hubName };
   }
 
@@ -147,8 +174,11 @@ const buildSinglePage = async ({ hub, websiteData, channel, index }) => {
   try {
     const contentRequests = [
       queryChatGptContent(introPrompt),
-      queryChatGptContent(firstBodyParagraphPrompt),
-      queryChatGptContent(secondBodyParagraphPrompt),
+      queryChatGptContent(keyConceptsPrompt),
+      queryChatGptContent(benefitsPrompt),
+      queryChatGptContent(bestPracticePrompt),
+      queryChatGptContent(futureTrendsPrompt),
+      queryChatGptContent(examplesPrompt),
       queryChatGptContent(conclusionPrompt),
     ];
 
@@ -162,9 +192,14 @@ const buildSinglePage = async ({ hub, websiteData, channel, index }) => {
   }
 
   // Attempt to format the returned data.
+  // Attempt to format the returned data.
   let contentFormatted;
   try {
-    contentFormatted = formatGutenburg(responses);
+    if (websiteData.formatType === "wp block") {
+      contentFormatted = formatGutenburg(responses);
+    } else {
+      contentFormatted = formatDivi(responses);
+    }
   } catch (error) {
     console.log("format page content error", error);
     throw { message: "Could not format the content", title: hubName };
@@ -183,8 +218,11 @@ const buildSinglePage = async ({ hub, websiteData, channel, index }) => {
       seoDescription,
       seoKeyphrase,
     };
-
-    addSinglePageItem(dataToBuildXML, channel, index);
+    if (websiteData.formatType === "wp block") {
+      addSinglePageItem(dataToBuildXML, channel, index);
+    } else {
+      addSinglePageItemDivi(dataToBuildXML, channel, index);
+    }
   } catch (error) {
     console.log("Build xml page item error", error);
     throw { message: "Error adding the xml item", title: hubName };
@@ -203,10 +241,9 @@ const buildSingleBlogPost = async ({
   index,
 }) => {
   console.log("_______ENTER BUILD BLOG_______");
-  if (index === 1 || index === 2) {
-    throw { message: "Error on purpose.", title: spoke.title };
-  }
+
   // Attempt to build the prompts;
+  let anecdotePrompt;
   let introPrompt;
   let whatIsTermPrompt;
   let historyOfTermPrompt;
@@ -215,7 +252,7 @@ const buildSingleBlogPost = async ({
   let howToPrompt;
   let tipsPrompt;
   let conclusionPrompt;
-  console.log("THE OTHER SPOKES", otherSpokes);
+
   const otherSpokesTitleAndUrl = otherSpokes.map((otherSpoke) => {
     return {
       spokeName: otherSpoke.title,
@@ -223,6 +260,11 @@ const buildSingleBlogPost = async ({
     };
   });
   try {
+    anecdotePrompt = buildPostAnecdotePrompt({
+      spoke,
+      hubData,
+      websiteData,
+    });
     introPrompt = buildPostIntroPrompt({ spoke, hubData, websiteData });
     whatIsTermPrompt = buildPostWhatIsTermPrompt({
       spoke,
@@ -275,6 +317,7 @@ const buildSingleBlogPost = async ({
   let responses;
   try {
     const contentRequests = [
+      queryChatGptContent(anecdotePrompt),
       queryChatGptContent(introPrompt),
       queryChatGptContent(whatIsTermPrompt),
       queryChatGptContent(historyOfTermPrompt),
@@ -286,7 +329,6 @@ const buildSingleBlogPost = async ({
     ];
 
     responses = await Promise.all(contentRequests);
-    console.log("_____ BLOG CONTENT RESPONSE GPT______", responses);
   } catch (error) {
     console.log("Query chpt error");
     throw {

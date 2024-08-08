@@ -7,7 +7,10 @@ const GeneratedSpokesPreview = ({
   handleDeleteSpoke,
   handleUpdateSpoke,
   handleUpdateHub,
+  setRegenerateSpokeCount,
+  regenerateSpokeCount,
 }) => {
+  console.log("HUBS AND SPOKES", hubsAndSpokes);
   return (
     <div className="mb-4">
       <DashboardSectionHeader title="Hubs and Spokes"></DashboardSectionHeader>
@@ -22,6 +25,8 @@ const GeneratedSpokesPreview = ({
                 handleDeleteSpoke={handleDeleteSpoke}
                 handleUpdateSpoke={handleUpdateSpoke}
                 handleUpdateHub={handleUpdateHub}
+                setRegenerateSpokeCount={setRegenerateSpokeCount}
+                regenerateSpokeCount={regenerateSpokeCount}
               />
             );
           })

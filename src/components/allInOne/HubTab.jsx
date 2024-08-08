@@ -9,6 +9,8 @@ export default function HubTab({
   handleDeleteSpoke,
   handleUpdateSpoke,
   handleUpdateHub,
+  setRegenerateSpokeCount,
+  regenerateSpokeCount,
 }) {
   const [showSpokes, setShowSpokes] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -24,6 +26,17 @@ export default function HubTab({
 
   const handleToggleSpokeEdit = (spoke) => {
     setEditSpokeModal(spoke);
+  };
+
+  const handleToggleRegnerate = (event, spoke) => {
+    const newSpoke = { ...spoke };
+    if (newSpoke.regenerate) {
+      setRegenerateSpokeCount(regenerateSpokeCount - 1);
+    } else {
+      setRegenerateSpokeCount(regenerateSpokeCount + 1);
+    }
+    newSpoke.regenerate = !newSpoke.regenerate;
+    handleUpdateSpoke(id, newSpoke);
   };
 
   return (
@@ -81,7 +94,31 @@ export default function HubTab({
                       className="hover:bg-custom-primary/10 p-2 border-b-[1px] border-solid border-gray-200 rounded flex justify-between items-center last-of-type:border-none"
                       key={spoke.id}
                     >
-                      <div className="w-[80%] flex-shrink-1">
+                      <div className="w-[80%] flex-shrink-1 flex items-center gap-1 ">
+                        <div className="flex items-center">
+                          <div className="flex items-center">
+                            <div className="flex items-center h-5">
+                              <input
+                                id={`${spoke.id}-regenerate`}
+                                type="checkbox"
+                                checked={spoke.regenerate}
+                                name={`${spoke.id} regenerate`}
+                                onChange={(event) =>
+                                  handleToggleRegnerate(event, spoke)
+                                }
+                                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
+                              />
+                            </div>
+                            <label
+                              htmlFor={`${spoke.id}-regenerate`}
+                              className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 hidden"
+                              aria-description="Regenerate Spoke"
+                            >
+                              Regenerate Spoke
+                              {/* <span className="text-custom-primary">{websiteName}</span>. */}
+                            </label>
+                          </div>
+                        </div>
                         <button
                           className="text-xs flex gap-2 cursor-pointer hover:underline"
                           onClick={() => handleToggleSpokeEdit(spoke)}
