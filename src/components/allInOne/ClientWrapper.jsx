@@ -15,7 +15,7 @@ import {
   FaRegTrashAlt,
 } from "react-icons/fa";
 import FormError from "../shared/Forms/FormError";
-import { LoadingSpinner } from "../shared/Forms/FormButton";
+import LoadingSpinner from "../shared/Forms/LoadingSpinner";
 
 const initialWebsiteInfo = {
   websiteName: "",
