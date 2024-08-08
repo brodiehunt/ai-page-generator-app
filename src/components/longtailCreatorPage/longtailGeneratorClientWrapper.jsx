@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import SEOMatrixFileUpload from "../allInOne/SEOMatrixFileUpload";
 import GenerateLongtailForm from "./GenerateLongtailForm";
-import HubsAndSpokesList from "./hubsAndSpokesList";
+import HubsAndSpokesList from "./HubsAndSpokesList";
 
 const initialSeoMatrix = {
   hubs: "",
