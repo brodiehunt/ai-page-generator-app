@@ -71,6 +71,7 @@ const ClientWrapper = () => {
   const [xmlStringResponse, setXmlStringResponse] = useState("");
   const [responseData, setResponseData] = useState(null);
   const [highDaBackLinks, setHighDaBackLinks] = useState([]);
+  const [extraInfoLongtail, setExtraInfoLongtail] = useState("");
   const [highDaBackLinkErrors, setHighDaBackLinkErrors] = useState("");
   const [regenerateSpokeCount, setRegenerateSpokeCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -159,6 +160,11 @@ const ClientWrapper = () => {
       (item, currIndex) => index !== currIndex
     );
     setHighDaBackLinks(filteredLinks);
+  };
+
+  // Input change for extra info longtail generator.
+  const handleExtraInfoLongtailChange = (event) => {
+    setExtraInfoLongtail(event.target.value);
   };
 
   // Regenerate new spokes event handler.
@@ -359,65 +365,88 @@ const ClientWrapper = () => {
         handleWebsiteInfoChange={handleWebsiteInfoChange}
         websiteInfoErrors={websiteInfoErrors}
       />
-      <h3 className="font-medium mb-4">High DA Backlinks</h3>
-      {
-        <FormError
-          message={highDaBackLinkErrors}
-          closeNotification={() => setHighDaBackLinkErrors("")}
-        />
-      }
-      {highDaBackLinks &&
-        highDaBackLinks.map((item, index) => {
-          return (
-            <div key={item.id} className="mb-2 flex items-end">
-              <div className="flex-grow">
-                <div>
-                  <>
-                    <label
-                      htmlFor={`highDaBackLinks.${index}`}
-                      className="block text-left text-sm text-gray-500 dark:text-gray-300"
-                    >
-                      {`Backlink Url ${index + 1}`}
-                    </label>
-                    <div className="relative flex items-center mt-2">
-                      <input
-                        id={`highDaBackLinks.${index}`}
-                        type="text"
-                        name={`highDaBackLinks.${index}`}
-                        value={highDaBackLinks[index].url}
-                        onChange={(event) => handleChangeBackLink(event, index)}
-                        placeholder="Backlink url"
-                        className={`block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg px-3 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 ${
-                          false &&
-                          "border-red-400 focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 "
-                        }`}
-                      />
-                    </div>
-                    {false && (
-                      <p className="mt-3 text-xs text-red-400" role="alert">
-                        {error.message}
-                      </p>
-                    )}
-                  </>
+      <div className="my-4">
+        <h3 className="font-medium mb-4">High DA Backlinks</h3>
+        {
+          <FormError
+            message={highDaBackLinkErrors}
+            closeNotification={() => setHighDaBackLinkErrors("")}
+          />
+        }
+        {highDaBackLinks &&
+          highDaBackLinks.map((item, index) => {
+            return (
+              <div key={item.id} className="mb-2 flex items-end">
+                <div className="flex-grow">
+                  <div>
+                    <>
+                      <label
+                        htmlFor={`highDaBackLinks.${index}`}
+                        className="block text-left text-sm text-gray-500 dark:text-gray-300"
+                      >
+                        {`Backlink Url ${index + 1}`}
+                      </label>
+                      <div className="relative flex items-center mt-2">
+                        <input
+                          id={`highDaBackLinks.${index}`}
+                          type="text"
+                          name={`highDaBackLinks.${index}`}
+                          value={highDaBackLinks[index].url}
+                          onChange={(event) =>
+                            handleChangeBackLink(event, index)
+                          }
+                          placeholder="Backlink url"
+                          className={`block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg px-3 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 ${
+                            false &&
+                            "border-red-400 focus:border-red-400 focus:outline-none focus:ring focus:ring-red-300 "
+                          }`}
+                        />
+                      </div>
+                      {false && (
+                        <p className="mt-3 text-xs text-red-400" role="alert">
+                          {error.message}
+                        </p>
+                      )}
+                    </>
+                  </div>
                 </div>
+                <button
+                  type="button"
+                  className="group py-2 px-4 rounded transition-all duration-200 text-custom-light"
+                  onClick={() => handleDeleteBackLink(index)}
+                >
+                  <FaRegTrashAlt className="w-5 h-5 text-gray-500 group-hover:text-red-500/80" />
+                </button>
               </div>
-              <button
-                type="button"
-                className="group py-2 px-4 rounded transition-all duration-200 text-custom-light"
-                onClick={() => handleDeleteBackLink(index)}
-              >
-                <FaRegTrashAlt className="w-5 h-5 text-gray-500 group-hover:text-red-500/80" />
-              </button>
-            </div>
-          );
-        })}
-      <button
-        type="button"
-        className="group py-2 px-4 rounded transition-all duration-200 text-custom-light bg-custom-primary hover:bg-custom-primary/80"
-        onClick={handleAddBackLink}
-      >
-        Add Backlink
-      </button>
+            );
+          })}
+        <button
+          type="button"
+          className="group py-2 px-4 rounded transition-all duration-200 text-custom-light bg-custom-primary hover:bg-custom-primary/80"
+          onClick={handleAddBackLink}
+        >
+          Add Backlink
+        </button>
+      </div>
+      <div>
+        <>
+          <label
+            htmlFor="extraInfoLongtail"
+            className="block text-left text-sm text-gray-500 dark:text-gray-300"
+          >
+            Extra Longtail generation info
+          </label>
+          <div className="relative flex items-center mt-2">
+            <textarea
+              name="extraInfoLongtail"
+              id="extraInfoLongtail"
+              onChange={handleExtraInfoLongtailChange}
+              placeholder="Some extra directions for generating longtails"
+              className={`block w-full py-2.5 text-gray-700 placeholder-gray-400/70 bg-white border border-gray-200 rounded-lg px-3 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 text-xs `}
+            />
+          </div>
+        </>
+      </div>
       <div className="grid grid-cols-3 gap-20 mb-4">
         <SEOMatrixManualInput
           setSeoMatrix={setSeoMatrix}
@@ -425,9 +454,11 @@ const ClientWrapper = () => {
           setHubsAndSpokes={setHubsAndSpokes}
           websiteInfo={websiteInfo}
           setWebsiteInfoErrors={setWebsiteInfoErrors}
+          extraInfoLongtail={extraInfoLongtail}
         />
         <SEOMatrixFileUpload setSeoMatrix={setSeoMatrix} />
       </div>
+
       <GeneratedSpokesPreview
         hubsAndSpokes={hubsAndSpokes}
         handleDeleteHub={handleDeleteHub}

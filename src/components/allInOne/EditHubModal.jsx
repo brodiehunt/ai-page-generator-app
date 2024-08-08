@@ -5,7 +5,6 @@ import FormButton from "@/src/components/shared/Forms/FormButton";
 import Button from "@/src/components/shared/Button";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Hub from "@/src/models/Hub";
 import { HubSchema } from "@/src/schemas";
 import { useEffect, useState } from "react";
 

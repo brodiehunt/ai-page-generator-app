@@ -29,6 +29,7 @@ const SEOMatrixManualInput = ({
   setHubsAndSpokes,
   websiteInfo,
   setWebsiteInfoErrors,
+  extraInfoLongtail,
 }) => {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -89,6 +90,7 @@ const SEOMatrixManualInput = ({
         configData: {
           blogsPerHub: websiteInfo.blogsPerHub,
           websiteContext: websiteInfo.websiteContext,
+          extraInfoLongtail: extraInfoLongtail,
         },
       };
       const stringData = JSON.stringify(postObj);
