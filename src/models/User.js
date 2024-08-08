@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
-import { websiteSummarySchema } from "./ReferenceSchemas";
 
 const UserSchema = new Schema({
   name: {
@@ -20,7 +19,6 @@ const UserSchema = new Schema({
     required: true,
     select: false, // Hide password from return query unless specifically requested
   },
-  websites: [websiteSummarySchema],
 });
 
 UserSchema.pre("save", function (next) {

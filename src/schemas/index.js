@@ -13,27 +13,12 @@ export const RegisterSchema = z.object({
   }),
 });
 
-export const NewWebsiteSchema = z
-  .object({
-    name: z
-      .string({ required_error: "Website name is required." })
-      .min(3, { message: "Website name must be at least 3 characters" }),
-    url: z.string().url({ message: "Invalid url" }),
-  })
-  .required();
-
-export const NewHubSchema = z.object({
-  name: z
-    .string()
-    .min(3, { message: "Hub name must be at least 3 characters" }),
-  topic: z
-    .string()
-    .min(3, { message: "Hub topic must be at least 3 characters" }),
-  addToMatrix: z.boolean().optional(),
-});
-
-export const createHubSchema = z.object({});
-
+// Used to validate SEO schema values before hitting api for longtails.
+/*
+ Used In:
+ 1. All in one generator 'generate longtails event handler'
+ 2. All in one generator 'regenerate longtails event handler'
+*/
 export const seoMatrixSchema = z
   .object({
     hubs: z
@@ -59,18 +44,27 @@ export const seoMatrixSchema = z
   })
   .required();
 
+/*
+  Used in all in one generator page
+*/
 export const websiteInfoSchema = z.object({
   websiteName: z
     .string()
     .min(1, { message: "Website Name is required to build import file" }),
   websiteUrl: z
     .string()
-    .url({ message: "Base website url is required to build import file" }),
+    .url({ message: "Base website url is required to build import file" })
+    .refine((value) => !value.endsWith("/"), {
+      message: "Base website URL should not end with a '/'",
+    }),
   formatType: z.enum(["wp block", "divi"]),
   tone: z.enum(["lighthearted", "formal"]),
   blogBaseUrl: z
     .string()
-    .url({ message: "Base website url is required to build import file" }),
+    .url({ message: "Base website blog url is required to build import file" })
+    .refine((value) => !value.endsWith("/"), {
+      message: "Base website blog URL should not end with a '/'",
+    }),
   blogsPerHub: z
     .string()
     .transform((val) => Number(val))
@@ -86,6 +80,9 @@ export const websiteInfoSchema = z.object({
     .min(1, { message: "Company Context is required to build import file" }),
 });
 
+/*
+  Hub schema validation for form in 'edit hub' modal
+*/
 export const HubSchema = z.object({
   id: z.string().min(1, { message: "ID has not been configured." }),
   hub: z.string().min(1, { message: "Title is required" }),
@@ -101,6 +98,9 @@ export const HubSchema = z.object({
   spokes: z.array(z.any()),
 });
 
+/*
+  Spoke schema validation for form in 'edit spoke' modal
+*/
 export const SpokeSchema = z.object({
   id: z.string().min(1, { message: "ID has not been configured." }),
   focusKeyPhrase: z
@@ -127,6 +127,9 @@ export const SpokeSchema = z.object({
   }),
 });
 
+/*
+  Used on Generate Longtail page in form onSubmit handler. 
+*/
 export const generateLongtailFormSchema = z.object({
   blogsPerHub: z
     .string()
@@ -162,3 +165,91 @@ export const generateLongtailFormSchema = z.object({
     .min(1, { message: "At least one customer need is required" })
     .transform((string) => string.split(",").map((string) => string.trim())),
 });
+
+/*
+  Spoke schema validation for form in Generate Spoke Page
+*/
+export const singleBlogSchema = z.object({
+  websiteName: z.string().min(1, "Website Name is required"),
+  websiteUrl: z
+    .string()
+    .url("Invalid URL")
+    .refine((value) => !value.endsWith("/"), {
+      message: "Base website URL should not end with a '/'",
+    }),
+  websiteContext: z.string().min(1, "Website Context is required"),
+  spokeTitle: z.string().min(1, "Spoke Title is required"),
+  spokeSlug: z.string().min(1, "Spoke Slug is required"),
+  spokeKeyphrase: z.string().min(1, "Spoke Keyphrase is required"),
+  spokeTargetAudience: z.string().min(1, "Spoke Target Audience is required"),
+  generateSeoMeta: z.boolean(),
+  hubName: z.string().min(1, "Hub Name is required"),
+  hubUrl: z
+    .string()
+    .url("Invalid URL")
+    .refine((value) => !value.endsWith("/"), {
+      message: "Base website URL should not end with a '/'",
+    }),
+  highDaBackLinks: z.array(z.string().url("Invalid URL")).optional(),
+  relatedSpokes: z
+    .array(
+      z.object({
+        spokeTitle: z.string().min(1, "Spoke Title is required"),
+        spokeUrl: z.string().url("Invalid URL"),
+        spokeKeyPhrase: z
+          .string()
+          .min(1, { message: "spokeKeyphrase is required" }),
+        spokeIsLive: z.boolean(),
+      })
+    )
+    .optional(),
+  blogFormat: z.enum(["wp block", "divi"]).default("wp block"),
+});
+
+/*
+  Hub schema validation for form in Generate Hub Page
+*/
+export const singleHubSchema = z.object({
+  websiteName: z.string().min(1, "Website Name is required"),
+  websiteUrl: z
+    .string()
+    .url("Invalid URL")
+    .refine((value) => !value.endsWith("/"), {
+      message: "Base website URL should not end with a '/'",
+    }),
+  websiteContext: z.string().min(1, "Website Context is required"),
+  generateSeoMeta: z.boolean(),
+  hubName: z.string().min(1, "Hub Name is required"),
+  hubUrl: z.string().min(1, "Hub Slug is required"),
+  highDaBackLinks: z.array(z.string().url("Invalid URL")).optional(),
+  relatedSpokes: z
+    .array(
+      z.object({
+        spokeTitle: z.string().min(1, "Spoke Title is required"),
+        spokeUrl: z
+          .string()
+          .url("Invalid URL")
+          .refine((value) => !value.endsWith("/"), {
+            message: "Base website URL should not end with a '/'",
+          }),
+        spokeKeyPhrase: z
+          .string()
+          .min(1, { message: "spokeKeyphrase is required" }),
+        spokeIsLive: z.boolean(),
+      })
+    )
+    .optional(),
+  blogFormat: z.enum(["wp block", "divi"]).default("wp block"),
+});
+
+/*
+  Schema to validate highDa Back links on the All in one generator back. 
+*/
+export const highDaBackLinksSchema = z
+  .array(
+    z.object({
+      id: z.string(),
+      url: z.string().url(),
+    })
+  )
+  .optional();

@@ -6,7 +6,7 @@ export default function DashboardLayout({ children }) {
       <div className="h-full max-h-[100%] flex-grow min-w-[350px] max-w-[350px] w-[350px] border-r-[1px] border-black/10">
         <DashboardSidebar />
       </div>
-      <main className="h-full max-h-[100%] overflow-y-scroll flex-grow relative pl-4">
+      <main className="h-full max-h-[100%] overflow-y-scroll flex-grow relative ">
         {children}
       </main>
     </div>

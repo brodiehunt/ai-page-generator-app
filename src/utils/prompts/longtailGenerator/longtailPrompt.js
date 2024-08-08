@@ -16,6 +16,7 @@ export const buildLongtailNamesGeneratorPrompt = (
       ]
     }
   ]}'. Following this response format is CRITICAL. Make sure that for each "Hub" topic you generate ${blogPages} spoke ideas.
+  Your response should be in British English.
   `;
   return prompt;
 };

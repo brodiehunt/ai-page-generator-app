@@ -11,7 +11,7 @@ export default async function longtailGeneratorPage({ searchParams }) {
 
   return (
     <>
-      <div className="flex flex-col pr-4">
+      <div className="flex flex-col">
         <DashboardPageHeader title="Longtail Generator" />
         <DashboardPagesContainer>
           <LongtailGeneratorClientWrapper websiteDataServerLoad={websiteData} />
