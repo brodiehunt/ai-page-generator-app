@@ -11,7 +11,7 @@ export const registerUser = async (values) => {
   console.log(values);
   const validatedFields = RegisterSchema.safeParse(values);
   console.log(validatedFields);
-  const { email, password } = validatedFields;
+  const { email, password } = values;
 
   if (!validatedFields.success) {
     return { error: "Invalid Fields" };
