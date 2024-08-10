@@ -18,7 +18,18 @@ export async function POST(request) {
     const chatCompletion = await openai.chat.completions.create({
       messages: [
         { role: "system", content: longtailPrompt },
-        { role: "user", content: `"""${matrixJSONString}"""`, maxtokens: 5000 },
+        {
+          role: "user",
+          content: `
+          """${matrixJSONString}"""
+          ${
+            configData.extraInfoLongtail
+              ? `Extra Information: ${configData.extraInfoLongtail}`
+              : ""
+          }
+          `,
+          maxtokens: 300000,
+        },
       ],
       model: "gpt-4o",
       response_format: { type: "json_object" },

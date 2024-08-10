@@ -73,8 +73,8 @@ export const buildPostIntroPrompt = ({
     ? highDaBackLinks[randomIndex]
     : "";
   const prompt = `You are a skilled content writer who specialises in writing SEO optimized content for the company ${websiteName}. ${websiteName} is using a hub and spoke SEO content model on their website to generate organic traffic. You are writing a blog post titled ${blogName}, which is a spoke within the model mentioned before. Its hub topic is ${hubName}. The keyphrase (keyword) for this blog is ${keyPhrase} and the keyphrase for its related spoke is ${hubName}. Some context on ${websiteName} is: "${websiteContext}".
-    Youre objective is to write an engaging introduction of about 200 words for this blog post. The introduction should:
-    1. Cleary introduct the topic "${blogName}" and explain it's relevance to the readers.
+    Youre objective is to write an engaging introduction of about 200 words for this blog post (with a h2 title - make it engagine and catchy). The introduction should:
+    1. Cleary introduct the topic "${blogName}" and explain it's relevance to the readers (Avoid using generic opening statements like: 'In the fast-paced world of...').
     2. Highlight the importance of the keyphrase ${keyPhrase} in the context of the blogs main discussion.
     3. Specificy the target audience "${targetAudience}" by mentioning the industry/sector that this blog will apply to and how this topic impacts them.
     4. Provide a brief overview of the main points that will be covered in the post.
@@ -299,7 +299,7 @@ export const buildPostConclPrompt = ({
     : "";
   return `
     You are a skilled content writer who specializes in writing SEO-optimized content for the company ${websiteName}. ${websiteName} is using a hub and spoke SEO content model on their website to generate organic traffic. You are writing a blog post titled "${blogName}", which is a spoke within the model mentioned before. Its hub topic is "${hubName}". The keyphrase (keyword) for this blog is "${keyPhrase}". Some context on ${websiteName} is: "${websiteContext}".
-    Your objective is to write a compelling closing section for this blog post from the perspective of ${websiteName}. Generate a catchy and engaging closing paragraph based on the key points and significance of the blog post. This section should:
+    Your objective is to write a compelling closing section for this blog post from the perspective of ${websiteName}. Generate a catchy and engaging closing paragraph (with a h2 title) based on the key points and significance of the blog post. This section should:
 
     1. Summarize the key takeaways from the blog post, emphasizing the importance of "${keyPhrase}" in the context of "${blogName}".
     2. Remind readers of the main points discussed and the value they provide.

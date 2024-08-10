@@ -29,7 +29,7 @@ export async function POST(request) {
               : ""
           }
           `,
-          maxtokens: 5000,
+          maxtokens: 1000000,
         },
       ],
       model: "gpt-4o-mini",

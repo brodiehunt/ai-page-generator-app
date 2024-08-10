@@ -202,6 +202,7 @@ const ClientWrapper = () => {
         matrixData: data,
         configData: {
           websiteContext: websiteInfo.websiteContext,
+          extraInfoLongtail,
         },
       };
       const stringData = JSON.stringify(postObj);

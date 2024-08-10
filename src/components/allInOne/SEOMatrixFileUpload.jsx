@@ -40,7 +40,7 @@ const SEOMatrixFileUpload = ({ setSeoMatrix }) => {
         }
 
         const jsonData = utils.sheet_to_json(worksheet, { header: 1 });
-
+        console.log("JsOn data", jsonData);
         const columns = jsonData[0];
 
         const dataObject = {};

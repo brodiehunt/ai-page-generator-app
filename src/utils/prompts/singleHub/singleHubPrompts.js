@@ -157,7 +157,7 @@ export const buildBestPracticesPrompt = ({
   highDaBackLinks,
   relatedSpokes,
 }) => {
-  const spokesToInclude = relatedSpokes.slice(2, 4);
+  const spokesToInclude = relatedSpokes.slice(4, 6);
   const spokesPrompt = !spokesToInclude.length
     ? ""
     : `You need to write the content for this section so that you can integrate nested h3 topics for the following spoke pages, if a url is provided, link to the page, if not bold the text where the hyperlink would otherwise go: ${spokesToInclude
@@ -222,6 +222,20 @@ export const buildExamplesPrompt = ({
   highDaBackLinks,
   relatedSpokes,
 }) => {
+  const spokesToInclude = relatedSpokes.slice(6);
+  const spokesPrompt = !spokesToInclude.length
+    ? ""
+    : `You need to write the content for this section so that you can integrate nested h3 topics for the following spoke pages, if a url is provided, link to the page, if not bold the text where the hyperlink would otherwise go: ${spokesToInclude
+        .map((spoke, index) => {
+          return `You need to create a h3 for the spoke page: ${
+            spoke.spokeTitle
+          }. This spokes keyphrase is ${spoke.spokeKeyPhrase}. ${
+            spoke.spokeIsLive
+              ? `Include a link to the spoke ${spoke.spokeUrl}.`
+              : ""
+          }`;
+        })
+        .join(", ")}`;
   return `You are a skilled content writer who specializes in writing SEO-optimized content for the company ${websiteName}. ${websiteName} is using a hub and spoke SEO content model on their website to generate organic traffic. You are writing a hub page titled "${hubName}". The hub page URL is "${hubUrl}". Some context on ${websiteName} is: "${websiteContext}".
 
 Your objective is to write a detailed section about the "Examples of ${hubName}" from the perspective of ${websiteName}. Generate a catchy and engaging title for this section based on the hub name and its significance. This section should:
@@ -233,7 +247,7 @@ Your objective is to write a detailed section about the "Examples of ${hubName}"
 5. Use a tone and style that reflects the brand voice of "${websiteName}" and engages the audience.
 6. Keep the content within a word limit of 400 words.
 7. Add a personal touch by starting this section with a brief anecdote or observation that relates to the topic and connects with the reader.
-
+${spokesPrompt}
 ${formatAndTonePrompt}
 `;
 };

@@ -40,10 +40,10 @@ export const buildIntroductionPrompt = ({
     : "";
 
   const prompt = `You are a skilled content writer who specialises in writing SEO optimized content for the company ${websiteName}. ${websiteName} is using a hub and spoke SEO content model on their website to generate organic traffic. You are writing content for a page titled ${hubName}, which is a hub within the model mentioned before. Some context on ${websiteName} is: "${websiteContext}".
-    Youre objective is to write an engaging introduction of about 200 words for this hub page. The introduction should:
-    1. Cleary introduct the topic "${hubName}" and explain it's relevance to the readers.
-    2. Highlight the importance of the keyphrase ${hubName} in the context of the blogs main discussion.
-    4. Provide a brief overview of the main points that will be covered in the post.
+    Youre objective is to write an engaging introduction of about 200 words for this hub PAGE. The introduction should:
+    1. Cleary introduct the topic "${hubName}" and explain it's relevance to the readers (Avoid using generic opening statements like: 'In the fast-paced world of...').
+    2. Highlight the importance of the keyphrase ${hubName} in the context of the pages main discussion.
+    4. Provide a brief overview of the main points that will be covered in the page.
     5. Explain why this topic is crucial for the targeted audience and how it can benefit them or solve their problems.
     6. Use a tone and style that reflects the brand voice of "${websiteName}" and engages the audience from the start. Remember, you are an expert on this topic.
     ${
@@ -185,6 +185,14 @@ export const buildExamplesPrompt = ({
 }) => {
   const { hubName, hubUrl } = hubData;
   const { websiteContext, websiteName } = websiteData;
+  const spokesToInclude = spokesData.slice(6);
+  const spokesPrompt = !spokesToInclude.length
+    ? ""
+    : `The content for this section should be written so that you can integrated nested sections for the following spoke topics. Each topic should have its own h3 element. You should introduce the spoke keyphrase and write about the topic in a way that links to the current section you are writing. These are the spoke pages: ${spokesToInclude
+        .map((spoke, index) => {
+          return `Spoke page title: ${spoke.title}. This spokes keyphrase is ${spoke.focusKeyPhrase}. When you mention ${spoke.focusKeyPhrase}, make sure the text is wrapped in a <b></b> tag. `;
+        })
+        .join(", ")}`;
   return `You are a skilled content writer who specializes in writing SEO-optimized content for the company ${websiteName}. ${websiteName} is using a hub and spoke SEO content model on their website to generate organic traffic. You are writing a hub page titled "${hubName}". The hub page URL is "${hubUrl}". Some context on ${websiteName} is: "${websiteContext}".
 
 Your objective is to write a detailed section about the "Examples of ${hubName}" from the perspective of ${websiteName}. Generate a catchy and engaging title for this section based on the hub name and its significance. This section should:
@@ -194,8 +202,9 @@ Your objective is to write a detailed section about the "Examples of ${hubName}"
 3. Highlight the importance and relevance of each example in the context of "${hubName}".
 4. Use scenarios, case studies, or real-world applications to illustrate each example.
 5. Use a tone and style that reflects the brand voice of "${websiteName}" and engages the audience.
-6. Keep the content within a word limit of 400 words.
+6. The content can be as long as needed to cover all the spoke pages mentioned below.
 7. Add a personal touch by starting this section with a brief anecdote or observation that relates to the topic and connects with the reader.
+${spokesPrompt}
 ${formatAndTonePrompt}
 
 `;
