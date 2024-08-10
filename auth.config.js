@@ -1,6 +1,5 @@
 import Credentials from "next-auth/providers/credentials";
 import { LoginSchema } from "@/src/schemas";
-import { authorizeUser } from "@/src/services/userService";
 
 export default {
   providers: [
@@ -11,7 +10,20 @@ export default {
         if (validatedFields.success) {
           const { email, password } = validatedFields.data;
 
-          const user = await authorizeUser(email, password);
+          // Make a POST request to the new API route
+          const response = await fetch("http://localhost:3000/api/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to authorize user");
+          }
+
+          const { user } = await response.json();
 
           if (!user || !user.password) {
             throw new Error("Invalid credentials");
@@ -19,12 +31,7 @@ export default {
 
           return user;
         }
-        // Validate fields here (will be email/password)
-        // If fields validated then check user exists in db
-        // if no user then or user without password. return null
-        // If both are fine, verify password.
-        // if password verified return user
-        // top level else return null
+
         return null;
       },
     }),
