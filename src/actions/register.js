@@ -11,6 +11,7 @@ export const registerUser = async (values) => {
   console.log(values);
   const validatedFields = RegisterSchema.safeParse(values);
   console.log(validatedFields);
+  const { email, password } = validatedFields;
 
   if (!validatedFields.success) {
     return { error: "Invalid Fields" };
@@ -18,9 +19,26 @@ export const registerUser = async (values) => {
 
   try {
     const newUser = await createUser(validatedFields.data);
+    await signIn("credentials", {
+      email,
+      password,
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
+    });
     return { success: "User Created" };
   } catch (error) {
     console.log("Errror:", error);
+    if (error instanceof AuthError) {
+      // Errors thrown by me in the authorize function.
+      if (error.cause?.err instanceof Error) {
+        return { error: error.cause.err.message };
+      }
+      switch (error.type) {
+        case "CredentialsSignin":
+          return { error: "Invalid credentials" };
+        default:
+          return { error: "Ooops something went wrong" };
+      }
+    }
     return { error: error.message };
   }
 };
