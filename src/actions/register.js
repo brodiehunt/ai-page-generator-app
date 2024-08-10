@@ -26,7 +26,7 @@ export const registerUser = async (values) => {
     });
     return { success: "User Created" };
   } catch (error) {
-    console.log("Errror:", error);
+    console.error("Errror:", error);
     if (error instanceof AuthError) {
       // Errors thrown by me in the authorize function.
       if (error.cause?.err instanceof Error) {
