@@ -1,3 +1,4 @@
+export const maxDuration = 60;
 import { NextResponse } from "next/server";
 import openai from "@/src/utils/openAI/openAi";
 import { buildLongtailGeneratorPrompt } from "@/src/utils/prompts/allInOne/longtailPrompts";
