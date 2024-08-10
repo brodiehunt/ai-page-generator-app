@@ -10,8 +10,10 @@ export default {
         if (validatedFields.success) {
           const { email, password } = validatedFields.data;
 
+          const baseURL =
+            process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000";
           // Make a POST request to the new API route
-          const response = await fetch("http://localhost:3000/api/login", {
+          const response = await fetch(`${baseURL}/api/login`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
