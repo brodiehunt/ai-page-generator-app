@@ -182,7 +182,7 @@ const LoginForm = () => {
           href="/auth/register"
           className="hover:text-gray-600 hover:border-solid hover:border-b-2 hover:border-gray-600 transition-all duration-200"
         >
-          Don't have an account?
+          Dont have an account?
         </Link>
       </p>
     </div>

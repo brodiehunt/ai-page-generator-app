@@ -37,7 +37,7 @@ const GenerateLongtailForm = ({ seoMatrix, setHubsAndSpokes }) => {
 
   useEffect(() => {
     reset({ ...getValues(), ...seoMatrix });
-  }, [seoMatrix]);
+  }, [seoMatrix, getValues, reset]);
 
   const onSubmit = async (data) => {
     setSuccess("");
