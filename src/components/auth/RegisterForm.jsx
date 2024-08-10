@@ -10,8 +10,10 @@ import { RegisterSchema } from "@/src/schemas";
 import FormError from "@/src/components/shared/Forms/FormError";
 import FormSuccess from "@/src/components/shared/Forms/FormSuccess";
 import { registerUser } from "@/src/actions/register";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
+  const router = useRouter();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -35,9 +37,11 @@ const RegisterForm = () => {
     setSuccess("");
     startTransition(() => {
       registerUser(values).then((data) => {
-        console.log("what da hell", data);
+        if (data.success) {
+          setSuccess(data.success);
+          router.push("/dashboard");
+        }
         setError(data.error);
-        setSuccess(data.success);
       });
     });
   };
@@ -53,7 +57,7 @@ const RegisterForm = () => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <FormError message={error} />
-        <FormSuccess message={success} />
+        <FormSuccess>{success}</FormSuccess>
         <div>
           <label
             htmlFor="name"
