@@ -12,7 +12,9 @@ export const createUser = async (userData) => {
   const userWithEmail = await findUserByEmail(email);
 
   if (userWithEmail) {
-    throw new Error("Email already in use");
+    const error = new Error("Email already in use");
+    error.status = 409;
+    throw error;
   }
 
   const user = new User({ email, password, name });

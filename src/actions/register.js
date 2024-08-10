@@ -27,6 +27,9 @@ export const registerUser = async (values) => {
     return { success: "User Created" };
   } catch (error) {
     console.error("Errror:", error);
+    if (error?.status == 409) {
+      return { error: error.message };
+    }
     if (error instanceof AuthError) {
       // Errors thrown by me in the authorize function.
       if (error.cause?.err instanceof Error) {
@@ -39,6 +42,7 @@ export const registerUser = async (values) => {
           return { error: "Ooops something went wrong" };
       }
     }
-    return { error: error.message };
+
+    throw error;
   }
 };

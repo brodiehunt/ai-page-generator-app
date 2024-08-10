@@ -37,11 +37,11 @@ const RegisterForm = () => {
     setSuccess("");
     startTransition(() => {
       registerUser(values).then((data) => {
-        if (data.success) {
-          setSuccess(data.success);
+        if (data?.success) {
+          setSuccess(data?.success);
           router.push("/dashboard");
         }
-        setError(data.error);
+        setError(data?.error || "");
       });
     });
   };

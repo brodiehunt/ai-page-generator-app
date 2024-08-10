@@ -5,6 +5,7 @@ export default {
   providers: [
     Credentials({
       async authorize(credentials) {
+        console.log("Authorize function running");
         const validatedFields = LoginSchema.safeParse(credentials);
 
         if (validatedFields.success) {
