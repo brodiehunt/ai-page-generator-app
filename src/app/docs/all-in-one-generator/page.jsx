@@ -51,7 +51,7 @@ export default function GettingStarted() {
               </li>
             </ul>
             <p>
-              If you haven't completed any of the above, I recommend gathering
+              If you haven not completed any of the above, I recommend gathering
               that information first.
             </p>
           </div>
@@ -101,11 +101,11 @@ export default function GettingStarted() {
                   useful information about the company as possible. This section
                   should include things like: What is the company about? What
                   services do they provide? Who are there customers? What are
-                  there values? etc. You could also include things like their
+                  their values? etc. You could also include things like their
                   vibe and location to aid in generating content that is
                   significantly more appropriate and targeted. It is important
                   to remember that this input is included for EVERY PROMPT. This
-                  means that writing 'Give me a 200 word introduction' will
+                  means that writing "Give me a 200 word introduction" will
                   result in a 200 word introduction for each individual section.
                 </li>
                 <li>
@@ -131,9 +131,9 @@ export default function GettingStarted() {
                 className="max-w-[800px]"
               />
               <p className="mb-2">
-                Once you have filled out this section, you can click 'Create
-                Longtails'. The Longtails will be populated in the 'Generated
-                hubs and spokes' section below the button.
+                Once you have filled out this section, you can click "Create
+                Longtails". The Longtails will be populated in the "Generated
+                hubs and spokes" section below the button.
               </p>
             </div>
             <div className="mb-4">
@@ -170,8 +170,8 @@ export default function GettingStarted() {
               />
               <p className="mb-2">
                 You can regenerate spokes that you don't like by selecting the
-                checkbox next to its title and clicking the button 'Regenerate
-                selected spokes spokes'
+                checkbox next to its title and clicking the button "Regenerate
+                selected spokes spokes"
               </p>
               <img
                 src="/docs/allInOneGenerator/RegenerateSpokes.png"
@@ -191,23 +191,23 @@ export default function GettingStarted() {
                 Login in to the admin area of the website this blog is for
               </li>
               <li>
-                In the sideBar navigation hover over 'Tools' and click 'import'
+                In the sideBar navigation hover over "Tools" and click "import"
               </li>
               <li>
-                Once you are on the import page, look for the 'Wordpress'
+                Once you are on the import page, look for the "Wordpress"
                 option. You may need to install the importer... If so, do that.{" "}
               </li>
-              <li>Next click 'Run Importer'</li>
+              <li>Next click "Run Importer"</li>
               <li>
-                Click 'Choose File' and upload the file you just downloaded.
+                Click "Choose File" and upload the file you just downloaded.
               </li>
-              <li>Click 'Upload File and Import'</li>
+              <li>Click "Upload File and Import"</li>
               <li>Choose a user to assign the posts too. </li>
               <li>Do NOT download and import file attachments</li>
-              <li>Click 'Submit'</li>
+              <li>Click "Submit"</li>
             </ul>
             <p className="mb-2">
-              Congrats! You should have a new post in the 'Posts' tab in your
+              Congrats! You should have a new post in the "Posts" tab in your
               wordpress admin.
             </p>
           </div>
