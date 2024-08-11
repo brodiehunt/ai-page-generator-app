@@ -105,8 +105,9 @@ export default function GettingStarted() {
                   vibe and location to aid in generating content that is
                   significantly more appropriate and targeted. It is important
                   to remember that this input is included for EVERY PROMPT. This
-                  means that writing "Give me a 200 word introduction" will
-                  result in a 200 word introduction for each individual section.
+                  means that writing &apos;Give me a 200 word introduction&apos;
+                  will result in a 200 word introduction for each individual
+                  section.
                 </li>
                 <li>
                   <strong>Backlink URL</strong> The full url of the high D.A

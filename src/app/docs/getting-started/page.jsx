@@ -30,7 +30,7 @@ export default function GettingStarted() {
               Atria is a tool that automates the process of content writing and
               formatting for blog posts and pages. More specifically, it is a AI
               content generation and formatting tool that streamlines the
-              process of creating Hub and Spoke pages for wordpress websites.
+              process of creating hub and spoke pages for wordpress websites.
             </p>
             <p className="mb-2">
               Atria is built around the hub and spoke content marketing model,
@@ -68,8 +68,8 @@ export default function GettingStarted() {
               </li>
             </ul>
             <p>
-              If you haven't completed any of the above, I recommend doing that
-              first and then coming back here to generate your blogs.
+              If you haven&apos;t completed any of the above, I recommend doing
+              that first and then coming back here to generate your blogs.
             </p>
           </div>
 
@@ -137,12 +137,13 @@ export default function GettingStarted() {
             <ul className="mb-2 pl-6 list-disc">
               <li>
                 Building content for, or formatting content for websites that
-                aren't built using wordpress.
+                aren&apos;t built using wordpress.
               </li>
               <li>
                 Creating customizable content layouts and content structure
-                (with the exception of the 'Section Layout' feature on the
-                single hub generator page and the single spoke generator page).
+                (with the exception of the &apos;Section Layout&apos; feature on
+                the single hub generator page and the single spoke generator
+                page).
               </li>
             </ul>
           </div>
@@ -171,21 +172,21 @@ export default function GettingStarted() {
                 provides detailed information on a particular aspect of the
                 broader topic. In this application, spokes are always formatted
                 as a wordpress POST. It is also important to know that the term
-                'blog' may be used interchangably with 'spoke' throughout the
-                application.
+                &apos;blog&apos; may be used interchangably with
+                &apos;spoke&apos; throughout the application.
               </li>
               <li>
                 <strong>URL:</strong> When you see an input field within this
-                application use 'URL' in its label, it is refering to the full
-                url. Eg: https://cogbranding.com.au
+                application use &apos;URL&apos; in its label, it is refering to
+                the full url. Eg: https://cogbranding.com.au
               </li>
               <li>
                 <strong>Slug:</strong> When you see an input field within this
-                application use 'slug' in its label, it is refering to the part
-                of the url that identifies the current page. Generally anything
-                after the last '/'. Eg: The slug for the page
+                application use &apos;slug&apos; in its label, it is refering to
+                the part of the url that identifies the current page. Generally
+                anything after the last &apos;/&apos;. Eg: The slug for the page
                 https://cogbranding.com.au/news/slugs-are-cool/ will be
-                'slugs-are-cool'.
+                &apos;slugs-are-cool&apos;.
               </li>
               <li>
                 <strong>SEO Matrix:</strong> This refers to the collection of

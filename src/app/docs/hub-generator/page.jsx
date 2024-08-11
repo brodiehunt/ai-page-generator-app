@@ -43,7 +43,7 @@ export default function LearnHubGenerator() {
               </li>
               <li>
                 The ability to control the order and the sections that the hub
-                is composed of using the 'Hub Section Layout' section.
+                is composed of using the &apos;Hub Section Layout&apos; section.
               </li>
             </ul>
           </div>
@@ -70,8 +70,8 @@ export default function LearnHubGenerator() {
               </li>
             </ul>
             <p>
-              If you haven't completed any of the above, I recommend gathering
-              that information first.
+              If you haven&apos;t completed any of the above, I recommend
+              gathering that information first.
             </p>
           </div>
 
@@ -117,8 +117,9 @@ export default function LearnHubGenerator() {
                   vibe and location to aid in generating content that is
                   significantly more appropriate and targeted. It is important
                   to remember that this input is included for EVERY PROMPT. This
-                  means that writing 'Give me a 200 word introduction' will
-                  result in a 200 word introduction for each individual section.
+                  means that writing &apos;Give me a 200 word introduction&apos;
+                  will result in a 200 word introduction for each individual
+                  section.
                 </li>
               </ul>
             </div>
@@ -210,11 +211,11 @@ export default function LearnHubGenerator() {
             <p className="mb-2">
               This feature works almost like a page builder. Clicking the green
               bubbles will include that section in the blog you are about to
-              create. When a section is 'added', it will appear as a tab (like
-              in the image shown above). The order in which these tabs are
-              selected or render on the screen is IMPORTANT. You can change the
-              order by dragging and dropping the tabs to the position you want
-              it placed.
+              create. When a section is &apos;added&apos;, it will appear as a
+              tab (like in the image shown above). The order in which these tabs
+              are selected or render on the screen is IMPORTANT. You can change
+              the order by dragging and dropping the tabs to the position you
+              want it placed.
             </p>
           </div>
           <div className="mb-4">
@@ -239,24 +240,27 @@ export default function LearnHubGenerator() {
                 Login in to the admin area of the website this blog is for
               </li>
               <li>
-                In the sideBar navigation hover over 'Tools' and click 'import'
+                In the sideBar navigation hover over &apos;Tools&apos; and click
+                &apos;import&apos;
               </li>
               <li>
-                Once you are on the import page, look for the 'Wordpress'
-                option. You may need to install the importer... If so, do that.{" "}
+                Once you are on the import page, look for the
+                &apos;Wordpress&apos; option. You may need to install the
+                importer... If so, do that.{" "}
               </li>
-              <li>Next click 'Run Importer'</li>
+              <li>Next click &apos;Run Importer&apos;</li>
               <li>
-                Click 'Choose File' and upload the file you just downloaded.
+                Click &apos;Choose File&apos; and upload the file you just
+                downloaded.
               </li>
-              <li>Click 'Upload File and Import'</li>
+              <li>Click &apos;Upload File and Import&apos;</li>
               <li>Choose a user to assign the posts too. </li>
               <li>Do NOT download and import file attachments</li>
-              <li>Click 'Submit'</li>
+              <li>Click &apos;Submit&apos;</li>
             </ul>
             <p className="mb-2">
-              Congrats! You should have a new post in the 'Posts' tab in your
-              wordpress admin.
+              Congrats! You should have a new post in the &apos;Posts&apos; tab
+              in your wordpress admin.
             </p>
           </div>
 
