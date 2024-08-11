@@ -33,3 +33,54 @@ export const dashboardTools = [
     },
   },
 ];
+
+export const docsTools = [
+  {
+    title: "Getting Started",
+    icon: MdLink,
+    text: "Learn about what you need to get started using Atria.",
+    link: {
+      href: "/docs/getting-started/",
+      text: "Learn",
+    },
+  },
+  {
+    title: "Longtail Generator",
+    icon: MdLink,
+    text: "Learn how to use the longtail generator to formulate ideas for you blogs.",
+    link: {
+      href: "/docs/longtail-generator",
+      text: "Learn",
+    },
+  },
+];
+
+export const nextSteps = [
+  {
+    title: "Spoke Generator",
+    icon: MdSpoke,
+    text: "Learn how to use the spoke generator to generate single spokes for your existing hub-spoke models",
+    link: {
+      href: "/docs/spoke-generator",
+      text: "Learn",
+    },
+  },
+  {
+    title: "Hub Generator",
+    icon: MdHub,
+    text: "Learn how to use the Hub generator to generate single hub pages.",
+    link: {
+      href: "/docs/hub-generator",
+      text: "Learn",
+    },
+  },
+  {
+    title: "All in One Generator",
+    icon: PiSpinnerBallDuotone,
+    text: "Learn how to use the All in one generator to generate content en masse",
+    link: {
+      href: "/docs/all-in-one-generator",
+      text: "Learn",
+    },
+  },
+];
