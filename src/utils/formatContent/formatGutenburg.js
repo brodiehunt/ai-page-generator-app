@@ -85,8 +85,9 @@ function wrapInGutenbergBlocks(contentArray) {
               console.log("li value", value);
               if (Array.isArray(value)) {
                 return `
-                  
+                  <!-- wp:list-item -->
                   <li>${wrapInGutenbergBlocks(value)}</li>
+                  <!-- /wp:list-item -->
                   `;
               }
               return `<li>${value}</li>`;
