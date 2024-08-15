@@ -4,7 +4,7 @@ import openai from "./openAi";
 export const queryChatGptContent = async (prompt) => {
   const chatCompletion = await openai.chat.completions.create({
     messages: [{ role: "user", content: prompt, maxtokens: 5000 }],
-    model: "gpt-4o",
+    model: "gpt-4o-2024-08-06",
     response_format: { type: "json_object" },
   });
   const responseJSON = JSON.parse(chatCompletion.choices[0].message.content);
